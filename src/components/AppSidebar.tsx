@@ -19,7 +19,7 @@ export function AppSidebar() {
   const navigate = useNavigate();
 
   const mainItems = [
-    { title: 'Início', url: '/', icon: Home },
+    { title: 'Início', url: '/home', icon: Home },
     { title: 'Cursos', url: '/courses', icon: BookOpen },
     { title: 'Perfil', url: '/profile', icon: User },
   ];

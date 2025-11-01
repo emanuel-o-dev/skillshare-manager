@@ -17,7 +17,7 @@ export default function Auth() {
   const [registerData, setRegisterData] = useState({ name: '', email: '', password: '' });
 
   if (user) {
-    navigate('/');
+    navigate('/courses');
     return null;
   }
 
@@ -26,7 +26,7 @@ export default function Auth() {
     setIsLoading(true);
     try {
       await login(loginData);
-      navigate('/');
+      navigate('/courses');
     } catch (error) {
       // Error handled by context
     } finally {
@@ -39,7 +39,7 @@ export default function Auth() {
     setIsLoading(true);
     try {
       await register(registerData);
-      navigate('/');
+      navigate('/courses');
     } catch (error) {
       // Error handled by context
     } finally {

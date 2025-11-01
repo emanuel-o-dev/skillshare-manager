@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -16,19 +16,22 @@ export default function Auth() {
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [registerData, setRegisterData] = useState({ name: '', email: '', password: '' });
 
-  if (user) {
-    navigate('/courses');
-    return null;
-  }
+  useEffect(() => {
+    if (user) {
+      console.log('User logged in, redirecting to /courses');
+      navigate('/courses', { replace: true });
+    }
+  }, [user, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
+      console.log('Attempting login...');
       await login(loginData);
-      navigate('/courses');
+      console.log('Login successful');
     } catch (error) {
-      // Error handled by context
+      console.error('Login failed:', error);
     } finally {
       setIsLoading(false);
     }
@@ -38,10 +41,11 @@ export default function Auth() {
     e.preventDefault();
     setIsLoading(true);
     try {
+      console.log('Attempting registration...');
       await register(registerData);
-      navigate('/courses');
+      console.log('Registration successful');
     } catch (error) {
-      // Error handled by context
+      console.error('Registration failed:', error);
     } finally {
       setIsLoading(false);
     }

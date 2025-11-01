@@ -22,7 +22,14 @@ class ApiClient {
       throw new Error(error.message || `Erro ${response.status}`);
     }
 
-    return response.json();
+    const json = await response.json();
+    
+    // Se a resposta vem com estrutura { success, data }, extrair data
+    if (json && typeof json === 'object' && 'data' in json) {
+      return json.data as T;
+    }
+    
+    return json as T;
   }
 
   // Auth

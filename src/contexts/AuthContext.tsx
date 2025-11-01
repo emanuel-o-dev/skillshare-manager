@@ -35,14 +35,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (data: LoginDto) => {
     try {
+      console.log('Login request data:', data);
       const response = await api.login(data);
+      console.log('Login response:', response);
+      
+      if (!response.access_token) {
+        throw new Error('Token não recebido da API');
+      }
+      
       localStorage.setItem('token', response.access_token);
-      setUser(response.user);
+      
+      // Buscar perfil do usuário
+      const userProfile = await api.getProfile();
+      console.log('User profile:', userProfile);
+      setUser(userProfile);
+      
       toast({
         title: 'Login realizado',
         description: 'Bem-vindo de volta!',
       });
     } catch (error) {
+      console.error('Login error:', error);
       toast({
         title: 'Erro ao fazer login',
         description: error instanceof Error ? error.message : 'Credenciais inválidas',
@@ -54,14 +67,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = async (data: RegisterDto) => {
     try {
+      console.log('Register request data:', data);
       const response = await api.register(data);
+      console.log('Register response:', response);
+      
+      if (!response.access_token) {
+        throw new Error('Token não recebido da API');
+      }
+      
       localStorage.setItem('token', response.access_token);
-      setUser(response.user);
+      
+      // Buscar perfil do usuário
+      const userProfile = await api.getProfile();
+      console.log('User profile:', userProfile);
+      setUser(userProfile);
+      
       toast({
         title: 'Cadastro realizado',
         description: 'Sua conta foi criada com sucesso!',
       });
     } catch (error) {
+      console.error('Register error:', error);
       toast({
         title: 'Erro ao cadastrar',
         description: error instanceof Error ? error.message : 'Verifique os dados informados',

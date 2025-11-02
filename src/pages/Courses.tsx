@@ -125,16 +125,27 @@ export default function Courses() {
         {courses.map((course) => (
           <Card key={course.id} className="flex flex-col transition-shadow hover:shadow-lg">
             <CardHeader>
-              <CardTitle>{course.title}</CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle>{course.name}</CardTitle>
+                <span className="text-xs font-medium text-muted-foreground">{course.code}</span>
+              </div>
               <CardDescription className="line-clamp-2">{course.description}</CardDescription>
             </CardHeader>
             <CardContent className="flex-1 space-y-2">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Clock className="h-4 w-4" />
-                <span>{course.duration}h de duração</span>
+                <span>{course.hoursTotal}h de duração</span>
+              </div>
+              <div className="flex gap-2 text-sm">
+                <span className="font-medium">Nível:</span>
+                <span className="text-muted-foreground">{course.level}</span>
+              </div>
+              <div className="flex gap-2 text-sm">
+                <span className="font-medium">Tipo:</span>
+                <span className="text-muted-foreground">{course.type}</span>
               </div>
               <p className="text-sm">
-                <span className="font-medium">Instrutor:</span> {course.instructor}
+                <span className="font-medium">Criado por:</span> {course.createdBy.name}
               </p>
             </CardContent>
             <CardFooter className="gap-2">

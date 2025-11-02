@@ -7,12 +7,20 @@ export interface User {
 
 export interface Course {
   id: number;
-  title: string;
+  code: string;
+  name: string;
   description: string;
-  instructor: string;
-  duration: number;
+  hoursTotal: number;
+  level: string;
+  type: string;
+  prerequisites: string[];
   createdAt: string;
   updatedAt: string;
+  createdById: number;
+  createdBy: {
+    name: string;
+    email: string;
+  };
 }
 
 export interface LoginDto {
@@ -27,10 +35,13 @@ export interface RegisterDto {
 }
 
 export interface CreateCourseDto {
-  title: string;
+  code: string;
+  name: string;
   description: string;
-  instructor: string;
-  duration: number;
+  hoursTotal: number;
+  level: string;
+  type: string;
+  prerequisites: string[];
 }
 
 export interface AuthResponse {

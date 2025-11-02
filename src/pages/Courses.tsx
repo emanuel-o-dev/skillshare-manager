@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Course } from '@/types/api';
 import { api } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Clock, UserCheck, UserX } from 'lucide-react';
+import { Plus, Clock, Eye, Pencil, Trash2 } from 'lucide-react';
 import { CourseDialog } from '@/components/CourseDialog';
 
 export default function Courses() {
+  const navigate = useNavigate();
   const [courses, setCourses] = useState<Course[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
@@ -34,38 +36,6 @@ export default function Courses() {
   useEffect(() => {
     loadCourses();
   }, []);
-
-  const handleEnroll = async (id: number) => {
-    try {
-      await api.enrollCourse(id);
-      toast({
-        title: 'Matrícula realizada',
-        description: 'Você foi matriculado no curso com sucesso!',
-      });
-    } catch (error) {
-      toast({
-        title: 'Erro ao matricular',
-        description: error instanceof Error ? error.message : 'Erro desconhecido',
-        variant: 'destructive',
-      });
-    }
-  };
-
-  const handleUnenroll = async (id: number) => {
-    try {
-      await api.unenrollCourse(id);
-      toast({
-        title: 'Matrícula cancelada',
-        description: 'Você foi removido do curso.',
-      });
-    } catch (error) {
-      toast({
-        title: 'Erro ao cancelar matrícula',
-        description: error instanceof Error ? error.message : 'Erro desconhecido',
-        variant: 'destructive',
-      });
-    }
-  };
 
   const handleDelete = async (id: number) => {
     if (!confirm('Deseja realmente excluir este curso?')) return;
@@ -148,22 +118,14 @@ export default function Courses() {
                 <span className="font-medium">Criado por:</span> {course.createdBy.name}
               </p>
             </CardContent>
-            <CardFooter className="gap-2">
+            <CardFooter className="flex gap-2">
               <Button
-                onClick={() => handleEnroll(course.id)}
+                onClick={() => navigate(`/courses/${course.id}`)}
                 variant="default"
                 className="flex-1 gap-2"
               >
-                <UserCheck className="h-4 w-4" />
-                Matricular
-              </Button>
-              <Button
-                onClick={() => handleUnenroll(course.id)}
-                variant="outline"
-                className="flex-1 gap-2"
-              >
-                <UserX className="h-4 w-4" />
-                Cancelar
+                <Eye className="h-4 w-4" />
+                Ver Detalhes
               </Button>
               {isAdmin && (
                 <>
@@ -173,16 +135,16 @@ export default function Courses() {
                       setIsDialogOpen(true);
                     }}
                     variant="secondary"
-                    size="sm"
+                    size="icon"
                   >
-                    Editar
+                    <Pencil className="h-4 w-4" />
                   </Button>
                   <Button
                     onClick={() => handleDelete(course.id)}
                     variant="destructive"
-                    size="sm"
+                    size="icon"
                   >
-                    Excluir
+                    <Trash2 className="h-4 w-4" />
                   </Button>
                 </>
               )}

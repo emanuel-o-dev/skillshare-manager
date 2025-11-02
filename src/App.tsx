@@ -10,6 +10,7 @@ import Auth from "./pages/Auth";
 import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Courses from "./pages/Courses";
+import CourseDetails from "./pages/CourseDetails";
 import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
@@ -42,6 +43,16 @@ const App = () => (
                 <ProtectedRoute>
                   <Layout>
                     <Courses />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/courses/:id"
+              element={
+                <ProtectedRoute>
+                  <Layout>
+                    <CourseDetails />
                   </Layout>
                 </ProtectedRoute>
               }

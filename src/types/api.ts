@@ -21,6 +21,13 @@ export interface Course {
     name: string;
     email: string;
   };
+  Enrollment?: {
+    user: {
+      id: number;
+      name: string;
+      email: string;
+    };
+  }[];
 }
 
 export interface LoginDto {

@@ -47,7 +47,7 @@ export default function CourseDetails() {
       setIsLoading(false);
     }
   };
-
+  
   // Normalize user id because backend may return different shapes (wrapped object, different key names)
   const getUserId = (u: any) => {
     if (!u) return undefined;
@@ -260,7 +260,7 @@ export default function CourseDetails() {
                         {enrollment.user.email}
                       </p>
                     </div>
-                    {enrollment.user.id === user?.id && (
+                    {Number(enrollment.user.id) === Number(currentUserId) && (
                       <Badge variant="outline">Você</Badge>
                     )}
                   </div>

@@ -19,11 +19,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
+  // Normalize different shapes returned by the API into the app's `User` type
+  const normalizeUser = (p: any): User | null => {
+    if (!p) return null;
+    const raw = (p && (p as any).user) ? (p as any).user : p;
+    const id = raw.userId ?? raw.id;
+    if (typeof id === 'undefined' || id === null) return null;
+    return {
+      id: Number(id),
+      name: raw.name ?? raw.fullName ?? raw.username ?? raw.email ?? '',
+      email: raw.email ?? '',
+      role: raw.role ?? 'USER',
+    };
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       api.getProfile()
-        .then(setUser)
+        .then((profile) => {
+          // profile can be { message, user } or the user object directly
+          const rawUser = (profile && (profile as any).user) ? (profile as any).user : profile;
+          const normalized = normalizeUser(rawUser);
+          setUser(normalized);
+        })
         .catch(() => {
           localStorage.removeItem('token');
         })
@@ -45,7 +64,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Buscar perfil do usuário
   const userProfile = await api.getProfile();
-  setUser(userProfile);
+  const rawUser = (userProfile && (userProfile as any).user) ? (userProfile as any).user : userProfile;
+  setUser(normalizeUser(rawUser));
       
       toast({
         title: 'Login realizado',
@@ -74,7 +94,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Buscar perfil do usuário
   const userProfile = await api.getProfile();
-  setUser(userProfile);
+  const rawUser = (userProfile && (userProfile as any).user) ? (userProfile as any).user : userProfile;
+  setUser(normalizeUser(rawUser));
       
       toast({
         title: 'Cadastro realizado',

@@ -27,6 +27,8 @@ export default function CourseDetails() {
     try {
       setIsLoading(true);
       const data = await api.getCourse(Number(id));
+      console.log('Curso carregado:', data);
+      console.log('Enrollments:', data.Enrollment);
       setCourse(data);
     } catch (error) {
       toast({
@@ -40,7 +42,15 @@ export default function CourseDetails() {
     }
   };
 
-  const isEnrolled = course?.Enrollment?.some((enrollment) => enrollment.user.id === user?.id) || false;
+  console.log('User do contexto:', user);
+  console.log('User ID:', user?.id);
+  
+  const isEnrolled = course?.Enrollment?.some((enrollment) => {
+    console.log('Comparando enrollment.user.id:', enrollment.user.id, 'com user?.id:', user?.id);
+    return enrollment.user.id === user?.id;
+  }) || false;
+  
+  console.log('isEnrolled:', isEnrolled);
 
   const handleEnroll = async () => {
     if (!course) return;

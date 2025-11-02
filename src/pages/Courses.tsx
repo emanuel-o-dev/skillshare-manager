@@ -15,7 +15,7 @@ export default function Courses() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { isAdmin } = useAuth();
+  const { isAdmin, isInstructor, user } = useAuth();
   const { toast } = useToast();
 
   const loadCourses = async () => {
@@ -77,7 +77,7 @@ export default function Courses() {
           <h1 className="text-3xl font-bold">Cursos Disponíveis</h1>
           <p className="text-muted-foreground">Explore e se matricule nos cursos</p>
         </div>
-        {isAdmin && (
+        {(isAdmin || isInstructor) && (
           <Button
             onClick={() => {
               setSelectedCourse(null);
@@ -127,7 +127,7 @@ export default function Courses() {
                 <Eye className="h-4 w-4" />
                 Ver Detalhes
               </Button>
-              {isAdmin && (
+              {(isAdmin || (isInstructor && user?.id === course.createdById)) && (
                 <>
                   <Button
                     onClick={() => {

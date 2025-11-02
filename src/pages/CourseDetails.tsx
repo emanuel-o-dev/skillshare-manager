@@ -34,7 +34,6 @@ export default function CourseDetails() {
       setIsLoading(true);
       const data = await api.getCourse(Number(id));
       console.log("Curso carregado:", data);
-      console.log("Enrollments:", data.Enrollment);
       setCourse(data);
     } catch (error) {
       toast({
@@ -49,7 +48,6 @@ export default function CourseDetails() {
     }
   };
 
-  console.log("User do contexto:", user);
   // Normalize user id because backend may return different shapes (wrapped object, different key names)
   const getUserId = (u: any) => {
     if (!u) return undefined;
@@ -64,22 +62,12 @@ export default function CourseDetails() {
 
   const currentUserId = getUserId(user);
 
-  console.log("User ID:", currentUserId);
-
   const isEnrolled =
     course?.Enrollment?.some((enrollment) => {
       const enrollmentUserId =
         getUserId(enrollment.user) ?? enrollment.user?.id;
-      console.log(
-        "Comparando enrollment.user.id:",
-        enrollmentUserId,
-        "com currentUserId:",
-        currentUserId
-      );
       return Number(enrollmentUserId) === Number(currentUserId);
     }) || false;
-
-  console.log("isEnrolled:", isEnrolled);
 
   const handleEnroll = async () => {
     if (!course) return;

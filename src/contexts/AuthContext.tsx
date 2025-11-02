@@ -35,9 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (data: LoginDto) => {
     try {
-      console.log('Login request data:', data);
       const response = await api.login(data);
-      console.log('Login response:', response);
       
       if (!response.access_token) {
         throw new Error('Token não recebido da API');
@@ -46,9 +44,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('token', response.access_token);
       
       // Buscar perfil do usuário
-      const userProfile = await api.getProfile();
-      console.log('User profile:', userProfile);
-      setUser(userProfile);
+  const userProfile = await api.getProfile();
+  setUser(userProfile);
       
       toast({
         title: 'Login realizado',
@@ -67,9 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const register = async (data: RegisterDto) => {
     try {
-      console.log('Register request data:', data);
       const response = await api.register(data);
-      console.log('Register response:', response);
       
       if (!response.access_token) {
         throw new Error('Token não recebido da API');
@@ -78,9 +73,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('token', response.access_token);
       
       // Buscar perfil do usuário
-      const userProfile = await api.getProfile();
-      console.log('User profile:', userProfile);
-      setUser(userProfile);
+  const userProfile = await api.getProfile();
+  setUser(userProfile);
       
       toast({
         title: 'Cadastro realizado',

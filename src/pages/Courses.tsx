@@ -1,13 +1,20 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Course } from '@/types/api';
-import { api } from '@/lib/api';
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
-import { Plus, Clock, Eye, Pencil, Trash2 } from 'lucide-react';
-import { CourseDialog } from '@/components/CourseDialog';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Course } from "@/types/api";
+import { api } from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { Plus, Clock, Eye, Pencil, Trash2 } from "lucide-react";
+import { CourseDialog } from "@/components/CourseDialog";
 
 export default function Courses() {
   const navigate = useNavigate();
@@ -24,9 +31,10 @@ export default function Courses() {
       setCourses(data);
     } catch (error) {
       toast({
-        title: 'Erro ao carregar cursos',
-        description: error instanceof Error ? error.message : 'Erro desconhecido',
-        variant: 'destructive',
+        title: "Erro ao carregar cursos",
+        description:
+          error instanceof Error ? error.message : "Erro desconhecido",
+        variant: "destructive",
       });
     } finally {
       setIsLoading(false);
@@ -38,20 +46,21 @@ export default function Courses() {
   }, []);
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Deseja realmente excluir este curso?')) return;
-    
+    if (!confirm("Deseja realmente excluir este curso?")) return;
+
     try {
       await api.deleteCourse(id);
       toast({
-        title: 'Curso excluído',
-        description: 'O curso foi removido com sucesso.',
+        title: "Curso excluído",
+        description: "O curso foi removido com sucesso.",
       });
       loadCourses();
     } catch (error) {
       toast({
-        title: 'Erro ao excluir curso',
-        description: error instanceof Error ? error.message : 'Erro desconhecido',
-        variant: 'destructive',
+        title: "Erro ao excluir curso",
+        description:
+          error instanceof Error ? error.message : "Erro desconhecido",
+        variant: "destructive",
       });
     }
   };
@@ -75,7 +84,9 @@ export default function Courses() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Cursos Disponíveis</h1>
-          <p className="text-muted-foreground">Explore e se matricule nos cursos</p>
+          <p className="text-muted-foreground">
+            Explore e se matricule nos cursos
+          </p>
         </div>
         {(isAdmin || isInstructor) && (
           <Button
@@ -93,13 +104,20 @@ export default function Courses() {
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {courses.map((course) => (
-          <Card key={course.id} className="flex flex-col transition-shadow hover:shadow-lg">
+          <Card
+            key={course.id}
+            className="flex flex-col transition-shadow hover:shadow-lg"
+          >
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>{course.name}</CardTitle>
-                <span className="text-xs font-medium text-muted-foreground">{course.code}</span>
+                <span className="text-xs font-medium text-muted-foreground">
+                  {course.code}
+                </span>
               </div>
-              <CardDescription className="line-clamp-2">{course.description}</CardDescription>
+              <CardDescription className="line-clamp-2">
+                {course.description}
+              </CardDescription>
             </CardHeader>
             <CardContent className="flex-1 space-y-2">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -115,7 +133,8 @@ export default function Courses() {
                 <span className="text-muted-foreground">{course.type}</span>
               </div>
               <p className="text-sm">
-                <span className="font-medium">Criado por:</span> {course.createdBy.name}
+                <span className="font-medium">Criado por:</span>{" "}
+                {course.createdBy.name}
               </p>
             </CardContent>
             <CardFooter className="flex gap-2">
@@ -127,7 +146,8 @@ export default function Courses() {
                 <Eye className="h-4 w-4" />
                 Ver Detalhes
               </Button>
-              {(isAdmin || (isInstructor && user?.id === course.createdById)) && (
+              {(isAdmin ||
+                (isInstructor && user?.id === course.createdById)) && (
                 <>
                   <Button
                     onClick={() => {
@@ -155,7 +175,9 @@ export default function Courses() {
 
       {courses.length === 0 && (
         <div className="py-12 text-center">
-          <p className="text-muted-foreground">Nenhum curso disponível no momento.</p>
+          <p className="text-muted-foreground">
+            Nenhum curso disponível no momento.
+          </p>
         </div>
       )}
 

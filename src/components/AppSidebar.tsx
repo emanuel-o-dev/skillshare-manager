@@ -95,7 +95,7 @@ export function AppSidebar() {
             <p className="truncate text-xs text-muted-foreground">{user?.email}</p>
           </div>
         </div>
-        <Button variant="outline" size="sm" onClick={handleLogout} className="w-full">
+        <Button variant="ghost" size="sm" onClick={handleLogout} className="w-full border border-border hover:bg-accent hover:text-accent-foreground">
           <LogOut className="mr-2 h-4 w-4" />
           Sair
         </Button>

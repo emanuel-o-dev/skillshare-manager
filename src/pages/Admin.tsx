@@ -15,7 +15,9 @@ export default function Admin() {
 
   const loadUsers = async () => {
     try {
-      const data = await api.getUsers();
+      const response = await api.getUsers();
+      // A API pode retornar { data: [...] } ou diretamente o array
+      const data = Array.isArray(response) ? response : (response as any).data || [];
       setUsers(data);
     } catch (error) {
       toast({
@@ -92,8 +94,8 @@ export default function Admin() {
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>
-                    <Badge variant={user.role === 'ADMIN' ? 'default' : 'secondary'}>
-                      {user.role === 'ADMIN' ? 'Admin' : 'Usuário'}
+                    <Badge variant={user.role === 'ADMIN' ? 'default' : user.role === 'INSTRUCTOR' ? 'default' : 'secondary'}>
+                      {user.role === 'ADMIN' ? 'Admin' : user.role === 'INSTRUCTOR' ? 'Instrutor' : 'Usuário'}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">

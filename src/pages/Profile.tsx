@@ -56,8 +56,8 @@ export default function Profile() {
               <CardTitle>Informações do Usuário</CardTitle>
               <CardDescription>Seus dados cadastrais</CardDescription>
             </div>
-            <Badge variant={user?.role === 'ADMIN' ? 'default' : 'secondary'}>
-              {user?.role === 'ADMIN' ? 'Administrador' : 'Usuário'}
+            <Badge variant={user?.role === 'ADMIN' ? 'default' : user?.role === 'INSTRUCTOR' ? 'default' : 'secondary'}>
+              {user?.role === 'ADMIN' ? 'Administrador' : user?.role === 'INSTRUCTOR' ? 'Instrutor' : 'Usuário'}
             </Badge>
           </div>
         </CardHeader>
@@ -96,7 +96,16 @@ export default function Profile() {
                   <Shield className="mr-2 inline-block h-4 w-4" />
                   Função
                 </Label>
-                <Input value={user?.role === 'ADMIN' ? 'Administrador' : 'Usuário'} disabled />
+                <Input 
+                  value={
+                    user?.role === 'ADMIN' 
+                      ? 'Administrador' 
+                      : user?.role === 'INSTRUCTOR' 
+                      ? 'Instrutor' 
+                      : 'Usuário'
+                  } 
+                  disabled 
+                />
               </div>
             </div>
 
